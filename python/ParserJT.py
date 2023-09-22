@@ -5,12 +5,22 @@ import triqs.utility.mpi as mpi
 def jahn_teller_ops():
     # Initialize Jahn-Teller
 
+    Q1 = np.zeros((6, 1, 3, 3))
+
     Q2 = np.zeros((6, 1, 3, 3))
     Q3 = np.zeros((6, 1, 3, 3))
 
     Qyz = np.zeros((6, 1, 3, 3))
     Qxz = np.zeros((6, 1, 3, 3))
     Qxy = np.zeros((6, 1, 3, 3))
+
+    # ---------> Q1
+
+    sq16 = 1/np.sqrt(6)
+    q1_ind = [sq16, -sq16, sq16, -sq16, sq16, -sq16]
+    q1_val = [(1, 0, 0, 0), (4, 0, 0, 0), (2, 0, 1, 1), (5, 0, 1, 1), (0, 0, 2, 2), (3, 0, 2, 2)]
+    for i, ind in enumerate(q1_val):
+        Q1[ind] = q1_ind[i]
 
     # ---------> Eg
     # Q2
@@ -42,6 +52,7 @@ def jahn_teller_ops():
     for i, ind in enumerate(qxy_val):
         Qxy[ind] = qyz_ind[i]
 
+    Q1 = Q1.reshape(18, 3)
     Q2 = Q2.reshape(18, 3)
     Q3 = Q3.reshape(18, 3)
     Qxz = Qxz.reshape(18, 3)
