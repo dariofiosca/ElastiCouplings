@@ -1,10 +1,22 @@
-import numpy as np
+# ------------------------------------------------------------------------------------#
+# ElastiCouplings library
+# Written by  : Dario Fiore Mosca (Ecole Polytechnique) 2023
+# Email: dario.fiore.mosca@univie.ac.at
+# ------------------------------------------------------------------------------------#
+#
+#    ElastiCouplings implements the Elastic Coupling calculation of Ref.
+#
+# ------------------------------------------------------------------------------------#
 
+import numpy as np
+import sys
+
+# Initialization
 f_meV = 16.159  # convertion eigenvalues to meV for oxygen mass
 f_cm1 = 130.34  # convertion eigenvalues to cm-1 for oxygen mass
+filename = sys.argv[1]
 
 q_vectors = []
-
 M_prim = np.array([[0., 0.5, 0.5], [0.5, 0., 0.5], [0.5, 0.5, 0.]])
 
 # Open the file and read each line
@@ -15,7 +27,9 @@ with open("q_mesh", "r") as file:
 
 R_values = []  # List to store R values
 matrices = []  # List to store 5x5 matrices
-with open('Elastic_constants.dat', 'r') as file:
+
+# Read File
+with open(filename, 'r') as file:
     lines = file.readlines()
 
 i = 0

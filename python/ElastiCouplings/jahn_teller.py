@@ -1,11 +1,20 @@
+# ------------------------------------------------------------------------------------#
+# ElastiCouplings library
+# Written by  : Dario Fiore Mosca (Ecole Polytechnique) 2023
+# Email: dario.fiore.mosca@univie.ac.at
+# ------------------------------------------------------------------------------------#
+#
+#    ElastiCouplings implements the Elastic Coupling calculation of Ref.
+#
+# ------------------------------------------------------------------------------------#
 import numpy as np
-from ParserJT import *
+from ElastiCouplings.ParserJT import *
+from ElastiCouplings.utils import *
 
 # Define the file path
 file_path = 'FORCE_CONSTANTS'
 
 # Define the indices list
-
 NN = 18
 
 # Initialise the nearest neighbor indices between atom 1 (centre) and 2 (NN)
