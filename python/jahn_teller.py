@@ -6,11 +6,11 @@ file_path = 'FORCE_CONSTANTS'
 
 # Define the indices list
 
-NN = 12
+NN = 18
 
 # Initialise the nearest neighbor indices between atom 1 (centre) and 2 (NN)
 arr = np.loadtxt('nearest_neighbors.dat')
-at_12 = np.zeros((NN, NN), dtype=float)
+at_12 = np.zeros((NN, 12), dtype=float)
 for at in range(NN):
     at_12[at, :] = arr[at, :] 
 

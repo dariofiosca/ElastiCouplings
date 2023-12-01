@@ -16,7 +16,7 @@ def jahn_teller_ops():
 
     # ---------> Q1
 
-    sq16 = 1/np.sqrt(6)
+    sq16 = 1 / np.sqrt(6)
     q1_ind = [sq16, -sq16, sq16, -sq16, sq16, -sq16]
     q1_val = [(1, 0, 0, 0), (4, 0, 0, 0), (2, 0, 1, 1), (5, 0, 1, 1), (0, 0, 2, 2), (3, 0, 2, 2)]
     for i, ind in enumerate(q1_val):
@@ -64,7 +64,6 @@ def jahn_teller_ops():
     return Q
 
 
-
 def print_mat(mat):
     """
     Prints a matrix on terminal
@@ -80,3 +79,28 @@ def print_mat(mat):
         for ind1 in range(ndim):
             str += " %6.5f   " % (mat[ind, ind1])
         print(str)
+
+
+def write_q_mesh():
+    # Define high symmetry points in reciprocal space
+    Gamma = np.array([0, 0, 0])
+    K = np.array([3 / 8, 3 / 8, 3 / 4])
+    L = np.array([1 / 2, 1 / 2, 1 / 2])
+    W = np.array([1 / 2, 1 / 4, 3 / 4])
+    X = np.array([1 / 2, 0, 1 / 2])
+
+    # Function to interpolate between two points
+    def interpolate(start, end, num_points):
+        return np.linspace(start, end, num_points, endpoint=False)
+
+    # Define the path and number of points between each
+    num_points = 40  # for example
+    path = np.concatenate([
+        interpolate(K, Gamma, num_points),
+        interpolate(Gamma, L, num_points),
+        interpolate(L, W, nuxm_points),
+        interpolate(W, X, num_points),
+        interpolate(X, K, num_points)
+    ])
+
+
