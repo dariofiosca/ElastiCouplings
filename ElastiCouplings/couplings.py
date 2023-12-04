@@ -29,7 +29,7 @@ def calc_couplings(NN):
     for at in range(NN):
         bonds[at, :] = arr[at, :]
 
-    with open('ElastiCouplings.dat', 'w') as file:
+    with open('ElastiCouplings.dat', 'w') as f:
         for at in range(NN):
             # Initialize the smaller matrix
             s_mat = np.zeros((12, 12, 3, 3))
@@ -118,4 +118,9 @@ def calc_couplings(NN):
 
             print('\nR = ', bonds[at, :])
             print_mat(np.round(jt_at_12, 5))
-            file.write(np.round(jt_at_12, 5))
+
+            for i in range(5):
+                strm = ''
+                for j in range(5):
+                    strm += ' %*.*f' % (10, 5, jt_at_12[i, j].real)
+                f.write("%s\n" % strm)
