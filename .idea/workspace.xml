@@ -3,12 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c4e7375c-204f-47b8-b6cc-f7cf10e497da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/ElastiCouplings/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/ElastiCouplings/couplings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/ElastiCouplings/fourier_couplings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/ElastiCouplings/neighbors.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/ElastiCouplings/parser.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/ElastiCouplings/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ElastiCouplings/neighbors.py" beforeDir="false" afterPath="$PROJECT_DIR$/ElastiCouplings/neighbors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/ElastiCouplings/neighbors.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/ElastiCouplings/neighbors.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
