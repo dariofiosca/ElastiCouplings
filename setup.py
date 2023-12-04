@@ -9,10 +9,10 @@ with open("README.md", "r") as fh:
 
 
 setuptools.setup(
-     name='phonopy-projector-scheme',  
+     name='ElastiCouplings',
      version='1.0',
-     packages=['phonopy-projector-scheme'] ,
-     author="Dario  Fiore Mosca",
+     packages=['ElastiCouplings'] ,
+     author="Dario Fiore Mosca",
      author_email="dario.fiore.mosca@univie.ac.at",
      description="   ",
      long_description=long_description,

@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------------------------#
 import numpy as np
-from ElastiCouplings.ParserJT import *
+from ElastiCouplings.parser import *
 from ElastiCouplings.utils import *
 
 # Define the file path

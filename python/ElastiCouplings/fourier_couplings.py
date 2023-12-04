@@ -7,7 +7,6 @@
 #    ElastiCouplings implements the Elastic Coupling calculation of Ref.
 #
 # ------------------------------------------------------------------------------------#
-
 import numpy as np
 import sys
 
