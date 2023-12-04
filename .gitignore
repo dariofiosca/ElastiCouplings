@@ -3,5 +3,6 @@
 ###################
 .envrc
 .idea
+*.egg-info
 *.sublime-project
 *.sublime-workspace

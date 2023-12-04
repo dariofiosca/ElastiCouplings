@@ -159,7 +159,7 @@ class VASPstruct:
 
         origin_octahedron = self.find_octahedra(origin)
 
-        with open('nearest_neighbors_TEST.dat', 'w') as file:
+        with open('nearest_neighbors.dat', 'w') as file:
             with open('bonds.dat', 'w') as file2:
                 for r in R_bas:
                     if np.linalg.norm(r[1]) < 20:
