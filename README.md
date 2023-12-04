@@ -16,12 +16,22 @@ pip install .
 
 ### Usage
 
+Examples for how to use it are provided in the Example folder
+
+The general workflow is the following:
+
+1. DFPT calculation with VASP and large unit cell
+
+2. Using phonopy commands (for more details have a look at the phonopy documentation)
 
 ```
-python /path/to/MagInteract/main.py magint
+phonopy --fc vasprun.xml
 ```
+for creating the FORCE\_CONSTANTS matrix.
 
----
+3. Copy in your folder the POSCAR and FORCE constant matrix. 
+
+...
 
 
 ---
