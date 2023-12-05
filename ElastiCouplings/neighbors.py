@@ -17,7 +17,7 @@ class VASPstruct:
 
     """
 
-    def __init__(self, ligand, oct):
+    def __init__(self, ligand, ion, oct):
         self.atom_positions = {}
         self.ligand = ligand
         self.q_types = []
@@ -40,7 +40,7 @@ class VASPstruct:
 
         self.poscar_parser()
         self.extend_ligands()
-        self.find_nearest_neighbors(oct, 'Re')
+        self.find_nearest_neighbors(oct, ion)
 
     def poscar_parser(self):
         """
