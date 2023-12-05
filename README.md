@@ -40,6 +40,7 @@ to generate the FORCE\_CONSTANTS matrix, then copy in your folder the POSCAR and
 It shall look something like this 
 
 222 286 158 210 277 150   272 144 304 260 136 294
+
 222 286 158 210 277 150   269 141 301 257 133 295
 
 and so on ... 
@@ -47,6 +48,7 @@ and so on ...
 The second file is "bonds.dat" and contains the connecting lattice vectors that bring the centre octahedra to the interacting one. In our case will look something like 
 
  0.5  0.5  0
+
 -0.5 -0.5  0
 
 These files can be both generated in python by using:
