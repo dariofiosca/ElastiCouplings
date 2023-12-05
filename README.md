@@ -13,6 +13,12 @@ You can install this release by using pip
 ```
 pip install .
 ```
+or simply by typing
+
+```
+python setup.py install
+```
+
 
 ### Usage
 
@@ -20,7 +26,7 @@ Examples for how to use it are provided in the Example folder
 
 The general workflow is the following:
 
-1. DFPT calculation with VASP and large unit cell
+1. DFPT calculation with VASP ... 
 
 2. Using phonopy commands (for more details have a look at the phonopy documentation)
 
