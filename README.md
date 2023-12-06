@@ -60,7 +60,7 @@ from  ElastiCouplings import couplings
 couplings.calc_couplings(2)
 ```
 
-where 62 is the maximum number of nearest-neighbors, next-nearest-neighbors and so on to consider. Bear in mind that the maximum number cannot exceed the number of lines/octahedra considered in your "nearest\_neighbors.dat" and "bonds.dat" files.  
+where 2 is the maximum number of nearest-neighbors, next-nearest-neighbors and so on to consider. Bear in mind that the maximum number cannot exceed the number of lines/octahedra considered in your "nearest\_neighbors.dat" and "bonds.dat" files.  
 
 ---
 
