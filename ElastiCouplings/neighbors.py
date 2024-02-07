@@ -150,7 +150,7 @@ class VASPstruct:
 
         for ion in atom_indices:
             if ion[1] != (origin):
-                R_vec = r_centre - ion[0]
+                R_vec = ion[0] - r_centre  # + ion[0]
                 vectors.append(R_vec)
                 distance.append(np.linalg.norm(R_vec))
                 r_index.append(ion[1])
@@ -192,7 +192,7 @@ class VASPstruct:
 
         octa = []
         for ind in oct_bas:
-            if ind[0] <= np.round(oct_bas[0][0], 4):
+            if np.round(ind[0] - oct_bas[0][0], 4) <= 0.0001:
                 octa.append(ind)
 
         # print(octa)
