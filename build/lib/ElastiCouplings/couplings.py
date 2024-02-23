@@ -13,10 +13,10 @@ from ElastiCouplings.utils import *
 
 # Define the file path
 file_path = 'FORCE_CONSTANTS'
-
+au_ev = 48.58677599261251539611
 
 # Define the indices list
-def calc_couplings(NN):
+def calc_couplings(NN, dft_exec):
     # Initialise the nearest neighbor indices between atom 1 (centre) and 2 (NN)
     arr = np.loadtxt('nearest_neighbors.dat')
     at_12 = np.zeros((NN, 12), dtype=float)
@@ -102,11 +102,18 @@ def calc_couplings(NN):
             if at == 0:
                 print('\nOn-site 1')
                 for i, val in enumerate(names):
-                    print(val, ' : ', jt_at_1[i])
+                    if dft_exec == 'Vasp':
+                        print(val, ' : ', jt_at_1[i])
+                    elif dft_exec == 'QE':
+                        print(val * au_ev, ' : ', jt_at_1[i])
+
 
                 print('\nOn-site 2')
                 for i, val in enumerate(names):
-                    print(val, ' : ', jt_at_2[i])
+                    if dft_exec == 'Vasp':
+                        print(val, ' : ', jt_at_2[i])
+                    elif dft_exec == 'QE':
+                        print(val * au_ev, ' : ', jt_at_2[i])
                 print('\nTwo Sites ')
 
             for i, val1 in enumerate(names):
@@ -122,5 +129,8 @@ def calc_couplings(NN):
             for i in range(5):
                 strm = ''
                 for j in range(5):
-                    strm += ' %*.*f' % (10, 5, jt_at_12[i, j].real)
+                    if dft_exec == 'Vasp':
+                        strm += ' %*.*f' % (10, 5, jt_at_12[i, j].real)
+                    elif dft_exec == 'QE':
+                        strm += ' %*.*f' % (10, 5, au_ev * jt_at_12[i, j].real)
                 f.write("%s\n" % strm)

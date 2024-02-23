@@ -105,7 +105,7 @@ def calc_couplings(NN, dft_exec):
                     if dft_exec == 'Vasp':
                         print(val, ' : ', jt_at_1[i])
                     elif dft_exec == 'QE':
-                        print(val * au_ev, ' : ', jt_at_1[i])
+                        print(val, ' : ', au_ev * jt_at_1[i])
 
 
                 print('\nOn-site 2')
@@ -113,7 +113,7 @@ def calc_couplings(NN, dft_exec):
                     if dft_exec == 'Vasp':
                         print(val, ' : ', jt_at_2[i])
                     elif dft_exec == 'QE':
-                        print(val * au_ev, ' : ', jt_at_2[i])
+                        print(val, ' : ', au_ev * jt_at_2[i])
                 print('\nTwo Sites ')
 
             for i, val1 in enumerate(names):
