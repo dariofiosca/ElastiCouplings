@@ -123,8 +123,12 @@ def calc_couplings(NN, dft_exec):
                     jt_12 = nmat.transpose() @ s_mat @ nmat
                     jt_at_12[i, j] = jt_12 - jt_at_1[i] - jt_at_2[j]
 
-            print('\nR = ', bonds[at, :])
-            print_mat(np.round(jt_at_12, 5))
+            if dft_exec == 'Vasp':
+                print('\nR = ', bonds[at, :])
+                print_mat(np.round(jt_at_12, 5))
+            elif dft_exec == 'QE':
+                print('\nR = ', bonds[at, :])
+                print_mat(np.round(au_ev * jt_at_12, 5))
 
             for i in range(5):
                 strm = ''
