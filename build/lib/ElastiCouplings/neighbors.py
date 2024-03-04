@@ -163,7 +163,7 @@ class VASPstruct:
             with open('bonds.dat', 'w') as file2:
                 for r in R_bas:
                     if np.linalg.norm(r[1]) < 20:
-                        strb = ' '.join(map(str, np.round(np.linalg.inv(self.a_brav) @ r[1], 4))) + '\n'
+                        strb = ' '.join(map(str, np.round(np.linalg.inv(self.a_brav.T) @ r[1], 4))) + '\n'
                         new_octahedra = self.find_octahedra(r[2])
 
                         str1 = ' '.join(map(str, origin_octahedron))
@@ -190,17 +190,29 @@ class VASPstruct:
 
         oct_bas = sorted(zip(distance, octahedra, vectors), key=lambda x: x[0])
 
+        seen = set()
+        oct_bas_no_dupl = []
+        for item in oct_bas:
+            # Convert numpy.ndarray to a tuple for hashability
+            hash_it = (item[0], item[1], tuple(item[2]))
+
+            if hash_it not in seen:
+                seen.add(hash_it)
+                oct_bas_no_dupl.append(item)
+
         octa = []
-        for ind in oct_bas:
-            if np.round(ind[0] - oct_bas[0][0], 4) <= 0.0001:
+        for ind in oct_bas_no_dupl:
+            if np.round(ind[0] - oct_bas_no_dupl[0][0], 4) <= 0.0001:
                 octa.append(ind)
 
-        # print(octa)
         new_octa = self.find_reference_frame(octa)
 
         return new_octa
 
     def parallel(self, vec1, vec2):
+
+        vec1 = np.around(vec1, decimals=6)
+        vec1 = np.around(vec1, decimals=6)
 
         # Check for zero vectors
         if np.all(vec1 == 0) or np.all(vec2 == 0):
