@@ -18,6 +18,7 @@ class VASPstruct:
     """
 
     def __init__(self, ligand, ion, oct):
+        self.tol = 2
         self.atom_positions = {}
         self.ligand = ligand
         self.q_types = []
@@ -92,7 +93,7 @@ class VASPstruct:
 
         if is_direct:
             for i, vec in enumerate(self.q_types):
-                self.q_types[i] = (self.bravais @ vec.T).T
+                self.q_types[i] = (self.bravais.T @ vec.T).T
 
         self.type_of_ion = [name for count, name in zip(self.ntypes, self.el_names) for _ in range(count)]
 
@@ -107,7 +108,7 @@ class VASPstruct:
 
     def extend_ligands(self):
 
-        shift = list(itertools.product(range(-1, 2), repeat=3))
+        shift = list(itertools.product(range(-2, 3), repeat=3))
         for i in range(len(shift)):
             for ind, lig in enumerate(self.type_of_ion):
                 if lig == self.ligand:
@@ -157,14 +158,14 @@ class VASPstruct:
 
         R_bas = sorted(zip(distance, vectors, r_index), key=lambda x: x[0])
 
-        origin_octahedron = self.find_octahedra(origin)
+        origin_octahedron, vector_octahedron = self.find_octahedra(origin, find_ref=True)
 
         with open('nearest_neighbors.dat', 'w') as file:
             with open('bonds.dat', 'w') as file2:
                 for r in R_bas:
                     if np.linalg.norm(r[1]) < 20:
                         strb = ' '.join(map(str, np.round(np.linalg.inv(self.a_brav.T) @ r[1], 4))) + '\n'
-                        new_octahedra = self.find_octahedra(r[2])
+                        new_octahedra, new_vec_octahedra = self.find_octahedra(r[2])
 
                         str1 = ' '.join(map(str, origin_octahedron))
                         str2 = ' '.join(map(str, new_octahedra))
@@ -174,10 +175,9 @@ class VASPstruct:
                         file2.write(strb)
                         file.write(out_str)
 
-    def find_octahedra(self, oct):
+    def find_octahedra(self, oct, find_ref=True):
 
         r_centre = self.q_types[oct - 1]
-        # print("Origin of centre octahedron:\n", r_centre)
         octahedra = []
         distance = []
         vectors = []
@@ -186,7 +186,7 @@ class VASPstruct:
             if lig == self.ligand:
                 octahedra.append(self.nions[ind])
                 vectors.append(self.q_types[ind] - r_centre)
-                distance.append(np.linalg.norm(r_centre - self.q_types[ind]))
+                distance.append(np.linalg.norm(self.q_types[ind] - r_centre))
 
         oct_bas = sorted(zip(distance, octahedra, vectors), key=lambda x: x[0])
 
@@ -202,17 +202,24 @@ class VASPstruct:
 
         octa = []
         for ind in oct_bas_no_dupl:
-            if np.round(ind[0] - oct_bas_no_dupl[0][0], 4) <= 0.0001:
+            if np.round(ind[0] - oct_bas_no_dupl[0][0], self.tol) <= 0.1:
                 octa.append(ind)
 
-        new_octa = self.find_reference_frame(octa)
+        if find_ref == True:
+            new_octa, vec_octa = self.find_reference_frame(octa)
+        else:
+            new_octa = []
+            vec_octa = []
+            for ind in octa:
+                new_octa.append(ind[1])
+                vec_octa.append(ind[2])
 
-        return new_octa
+        return new_octa, vec_octa
 
     def parallel(self, vec1, vec2):
 
         vec1 = np.around(vec1, decimals=6)
-        vec1 = np.around(vec1, decimals=6)
+        vec2 = np.around(vec2, decimals=6)
 
         # Check for zero vectors
         if np.all(vec1 == 0) or np.all(vec2 == 0):
@@ -236,6 +243,7 @@ class VASPstruct:
                  np.array([-1, 0, 0]), np.array([0, -1, 0])]
 
         new_octa = []
+        vec_octa = []
         logics = [False, False, False, False, False, False]
 
         for i in range(6):
@@ -243,6 +251,7 @@ class VASPstruct:
                 vec = ind[2] / np.linalg.norm(ind[2])
                 if self.parallel(vec, basis[i]) and logics[i] is False:
                     new_octa.append(ind[1])
+                    vec_octa.append(ind[2])
                     logics[i] = True
 
-        return new_octa
+        return new_octa, vec_octa

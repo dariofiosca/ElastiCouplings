@@ -15,8 +15,9 @@ from ElastiCouplings.utils import *
 file_path = 'FORCE_CONSTANTS'
 au_ev = 48.58677599261251539611
 
+
 # Define the indices list
-def calc_couplings(NN, dft_exec):
+def calc_couplings(NN, dft_exec, reduced=True):
     # Initialise the nearest neighbor indices between atom 1 (centre) and 2 (NN)
     arr = np.loadtxt('nearest_neighbors.dat')
     at_12 = np.zeros((NN, 12), dtype=float)
@@ -58,8 +59,10 @@ def calc_couplings(NN, dft_exec):
                         submatrix = [[float(value) for value in next(file).split()] for _ in range(3)]
 
                         # Find the index of the row and column in the at_1 list
-                        row_at_1_index = at_12[at, :].tolist().index(row_ind) if row_ind in at_12[at, :].tolist() else None
-                        col_at_1_index = at_12[at, :].tolist().index(col_ind) if col_ind in at_12[at, :].tolist() else None
+                        row_at_1_index = at_12[at, :].tolist().index(row_ind) if row_ind in at_12[at,
+                                                                                            :].tolist() else None
+                        col_at_1_index = at_12[at, :].tolist().index(col_ind) if col_ind in at_12[at,
+                                                                                            :].tolist() else None
 
                         # Assign the submatrix to the corresponding position in the smaller matrix
                         if row_at_1_index is not None and col_at_1_index is not None:
@@ -81,21 +84,29 @@ def calc_couplings(NN, dft_exec):
             # On-site 1
             zeros_array = np.zeros((18, 3))
 
-            names = ['Qxy', 'Qyz', 'Q3', 'Qxz', 'Q2']
+            if reduced:
+                names = ['Qxy', 'Qyz', 'Q3', 'Qxz', 'Q2']
+                Qlen = 5
+            else:
+                names = ['Q1', 'Qxy', 'Qyz', 'Q3', 'Qxz', 'Q2', 'Qxp', 'Qyp', 'Qzp', 'Qxpp', 'Qypp', 'Qzpp', 'Qxyp',
+                         'Qyzp', 'Qxzp']
+                Qlen = 15
 
             jt_at_1 = []
             jt_at_2 = []
-            jt_at_12 = np.zeros((5, 5))
+            jt_at_12 = np.zeros((Qlen, Qlen))
 
             for i, val in enumerate(names):
                 mat = np.concatenate((Q[:, i * 3:(i * 3 + 3)], zeros_array), axis=0)
                 nmat = np.array(mat[:, 0] + mat[:, 1] + mat[:, 2])
+                # nmat = nmat / np.linalg.norm(nmat)
                 jt_1 = nmat.transpose() @ s_mat @ nmat
                 jt_at_1.append(jt_1)
 
             for i, val in enumerate(names):
                 mat = np.concatenate((zeros_array, Q[:, i * 3:(i * 3 + 3)]), axis=0)
                 nmat = np.array(mat[:, 0] + mat[:, 1] + mat[:, 2])
+                # nmat = nmat / np.linalg.norm(nmat)
                 jt_2 = nmat.transpose() @ s_mat @ nmat
                 jt_at_2.append(jt_2)
 
@@ -106,7 +117,6 @@ def calc_couplings(NN, dft_exec):
                         print(val, ' : ', jt_at_1[i])
                     elif dft_exec == 'QE':
                         print(val, ' : ', au_ev * jt_at_1[i])
-
 
                 print('\nOn-site 2')
                 for i, val in enumerate(names):
@@ -120,6 +130,7 @@ def calc_couplings(NN, dft_exec):
                 for j, val2 in enumerate(names):
                     mat = np.concatenate((Q[:, i * 3:(i * 3 + 3)], Q[:, j * 3:(j * 3 + 3)]), axis=0)
                     nmat = np.array(mat[:, 0] + mat[:, 1] + mat[:, 2])
+                    # nmat = nmat / np.linalg.norm(nmat)
                     jt_12 = nmat.transpose() @ s_mat @ nmat
                     jt_at_12[i, j] = jt_12 - jt_at_1[i] - jt_at_2[j]
 
@@ -130,11 +141,11 @@ def calc_couplings(NN, dft_exec):
                 print('\nR = ', bonds[at, :])
                 print_mat(np.round(au_ev * jt_at_12, 5))
 
-            for i in range(5):
+            for i in range(Qlen):
                 strm = ''
-                for j in range(5):
+                for j in range(Qlen):
                     if dft_exec == 'Vasp':
-                        strm += ' %*.*f' % (10, 5, jt_at_12[i, j].real)
+                        strm += ' %*.*f' % (Qlen, Qlen, jt_at_12[i, j].real)
                     elif dft_exec == 'QE':
-                        strm += ' %*.*f' % (10, 5, au_ev * jt_at_12[i, j].real)
+                        strm += ' %*.*f' % (Qlen, Qlen, au_ev * jt_at_12[i, j].real)
                 f.write("%s\n" % strm)
